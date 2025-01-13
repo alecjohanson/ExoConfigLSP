@@ -82,6 +82,9 @@ func isValidDataUnit(data_type string, data_unit string) bool {
 }
 
 func getDiagnosticsForFile(text string) []lsp.Diagnostic {
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	logger := getLogger(dir + "/log.txt")
+	logger.Println("Checking File Diagnostics")
 	diagnostics := []lsp.Diagnostic{}
 	prev_line := ""
 	for row, line := range strings.Split(text, "\n") {
@@ -123,6 +126,16 @@ func getDiagnosticsForFile(text string) []lsp.Diagnostic {
 			data_unit := matches[1][1] // matches[1][1] contains the second value inside quotes
 
 			idx = strings.Index(prev_line, "data_type")
+			if idx < 0 {
+				logger.Printf("No Data_type:%d:", idx)
+				diagnostics = append(diagnostics, lsp.Diagnostic{
+					Range:    LineRange(row, idx, idx+len("data_unit")),
+					Severity: 1,
+					Source:   "Exo",
+					Message:  "No Associated data_type found for " + data_unit,
+				})
+				break
+			}
 			re = regexp.MustCompile(`"([^"]+)"`)
 			_ = re
 			matches = re.FindAllStringSubmatch(prev_line, -1)
@@ -143,17 +156,6 @@ func getDiagnosticsForFile(text string) []lsp.Diagnostic {
 					Message:  data_unit + " not a valid data_unit for " + data_type,
 				})
 			}
-		}
-
-		if strings.Contains(line, "Neovim") {
-			idx := strings.Index(line, "Neovim")
-			diagnostics = append(diagnostics, lsp.Diagnostic{
-				Range:    LineRange(row, idx, idx+len("Neovim")),
-				Severity: 2,
-				Source:   "Common Sense",
-				Message:  "Great choice :)",
-			})
-
 		}
 		prev_line = line
 	}

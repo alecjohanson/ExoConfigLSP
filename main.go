@@ -40,7 +40,6 @@ func main() {
 			continue
 		}
 
-		logger.Println(msg)
 		handleMessage(logger, writer, state, method, contents)
 	}
 }
