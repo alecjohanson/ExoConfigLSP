@@ -2,17 +2,28 @@ package main
 
 import (
 	"bufio"
-	"educationalsp/analysis"
-	"educationalsp/lsp"
-	"educationalsp/rpc"
+	"exoconfiglsp/analysis"
+	"exoconfiglsp/lsp"
+	"exoconfiglsp/rpc"
 	"encoding/json"
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func main() {
-	logger := getLogger("/home/tjdevries/git/educationalsp/log.txt")
+	if len(os.Args) > 1 && os.Args[1] == "--version" {
+		print("0.1")
+		return
+	}
+	if len(os.Args) > 1 && os.Args[1] == "--dir" {
+		dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+		print(dir + "/log.txt")
+		return
+	}
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	logger := getLogger(dir + "/log.txt")
 	logger.Println("Hey, I started!")
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -29,6 +40,7 @@ func main() {
 			continue
 		}
 
+		logger.Println(msg)
 		handleMessage(logger, writer, state, method, contents)
 	}
 }
@@ -155,5 +167,5 @@ func getLogger(filename string) *log.Logger {
 		panic("hey, you didnt give me a good file")
 	}
 
-	return log.New(logfile, "[educationalsp]", log.Ldate|log.Ltime|log.Lshortfile)
+	return log.New(logfile, "[ExoConfigLSP]", log.Ldate|log.Ltime|log.Lshortfile)
 }

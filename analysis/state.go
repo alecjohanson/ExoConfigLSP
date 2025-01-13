@@ -1,9 +1,14 @@
 package analysis
 
 import (
-	"educationalsp/lsp"
+	"exoconfiglsp/lsp"
 	"fmt"
 	"strings"
+	"regexp"
+	"os"
+	"log"
+	"encoding/json"
+	"path/filepath"
 )
 
 type State struct {
@@ -15,17 +20,129 @@ func NewState() State {
 	return State{Documents: map[string]string{}}
 }
 
+func getLogger(filename string) *log.Logger {
+	logfile, err := os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+	if err != nil {
+		panic("hey, you didnt give me a good file")
+	}
+
+	return log.New(logfile, "[ExoConfigLSP]", log.Ldate|log.Ltime|log.Lshortfile)
+}
+
+func isValidDataType(data_type string) bool {
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	logger := getLogger(dir + "/log.txt")
+	file_dir := dir + "/analysis/ExoTypesUnits.json"
+	fileData, err := os.ReadFile(file_dir)
+	if err != nil {
+		logger.Printf("Failed to open ExoTypesUnits.json")
+		return false
+	}
+
+	var data_types map[string]any
+	err = json.Unmarshal(fileData, &data_types)
+	if err != nil {
+		logger.Printf("Failed to parse ExoTypesUnits.json")
+		return false
+	}
+
+	for k,_ := range data_types {
+		if k == data_type { 
+			return true
+		}
+	}
+	logger.Println("No Match")
+	return false
+}
+
+func isValidDataUnit(data_type string, data_unit string) bool {
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	logger := getLogger(dir + "/log.txt")
+	file_dir := dir + "/analysis/ExoTypesUnits.json"
+	fileData, err := os.ReadFile(file_dir)
+	if err != nil {
+		logger.Printf("Failed to open ExoTypesUnits.json")
+		return false
+	}
+
+	var data_types map[string][]string
+	err = json.Unmarshal(fileData, &data_types)
+	if err != nil {
+		logger.Printf("Failed to parse ExoTypesUnits.json")
+		return false
+	}
+	value, _ := data_types[data_type]
+	for v := range value {
+		if value[v] == data_unit { 
+			return true
+		}
+	}
+	logger.Println("No Match")
+	return false
+}
+
 func getDiagnosticsForFile(text string) []lsp.Diagnostic {
 	diagnostics := []lsp.Diagnostic{}
+	prev_line := ""
 	for row, line := range strings.Split(text, "\n") {
-		if strings.Contains(line, "VS Code") {
-			idx := strings.Index(line, "VS Code")
-			diagnostics = append(diagnostics, lsp.Diagnostic{
-				Range:    LineRange(row, idx, idx+len("VS Code")),
-				Severity: 1,
-				Source:   "Common Sense",
-				Message:  "Please make sure we use good language in this video",
-			})
+		if (strings.Contains(line, "data_type")) {
+			idx := strings.Index(line, "data_type")
+			re := regexp.MustCompile(`"([^"]+)"`)
+			_ = re
+			matches := re.FindAllStringSubmatch(line, -1)
+
+			// Check if there are at least two matches and print the second one
+			if len(matches) < 2 {
+				break
+			}
+			unit := matches[1][1] // matches[1][1] contains the second value inside quotes
+			if !isValidDataType(unit) {
+				_ = row
+				_ = idx
+			       diagnostics = append(diagnostics, lsp.Diagnostic{
+					Range:    LineRange(row, idx+1, idx+len("data_type")),
+					Severity: 1,
+					Source:   "Exo",
+					Message:  unit + " not a valid data_type",
+				})
+			}
+			
+		}
+
+		if (strings.Contains(line, "data_unit")) {
+			idx := strings.Index(line, "data_unit")
+			re := regexp.MustCompile(`"([^"]+)"`)
+			_ = re
+			matches := re.FindAllStringSubmatch(line, -1)
+
+			// Check if there are at least two matches and print the second one
+			if len(matches) < 2 {
+				break
+			}
+			///////////////////////////////////////////
+			data_unit := matches[1][1] // matches[1][1] contains the second value inside quotes
+
+			idx = strings.Index(prev_line, "data_type")
+			re = regexp.MustCompile(`"([^"]+)"`)
+			_ = re
+			matches = re.FindAllStringSubmatch(prev_line, -1)
+
+			// Check if there are at least two matches and print the second one
+			if len(matches) < 2 {
+				break
+			}
+			data_type := matches[1][1] // matches[1][1] contains the second value inside quotes
+
+			if !isValidDataUnit(data_type, data_unit) {
+				_ = row
+				_ = idx
+			       diagnostics = append(diagnostics, lsp.Diagnostic{
+					Range:    LineRange(row, idx+1, idx+len("data_type")),
+					Severity: 1,
+					Source:   "Exo",
+					Message:  data_unit + " not a valid data_unit for " + data_type,
+				})
+			}
 		}
 
 		if strings.Contains(line, "Neovim") {
@@ -38,6 +155,7 @@ func getDiagnosticsForFile(text string) []lsp.Diagnostic {
 			})
 
 		}
+		prev_line = line
 	}
 
 	return diagnostics
