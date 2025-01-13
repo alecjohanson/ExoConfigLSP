@@ -26,6 +26,11 @@ func main() {
 	logger := getLogger(dir + "/log.txt")
 	logger.Println("Hey, I started!")
 
+	// VSCODE: 
+	// conn, err := net.Dial("tcp", "localhost:5007")
+	// if err != nil { os.Exit(1)}
+	// defer conn.Close()
+	// scanner := bufio.NewScanner(conn)
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
 
