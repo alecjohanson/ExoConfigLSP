@@ -152,7 +152,7 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analysis.State, m
 		}
 
 		// Create a response
-		response := state.TextDocumentCompletion(request.ID, request.Params.TextDocument.URI)
+		response := state.TextDocumentCompletion(request.ID, request.Params.TextDocument.URI, request.Params.Position.Line)
 
 		// Write it back
 		writeResponse(writer, response)

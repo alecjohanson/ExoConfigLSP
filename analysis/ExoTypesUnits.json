@@ -1,18 +1,390 @@
 {
-	"NUMBER": [],
-	"BOOLEAN": [],
-	"STRING": [],
-
-	"HUMIDITY": ["PERCENT"],
-	"ELEC_RESISTANCE": ["OHM"],
-	"PRESSURE": ["PASCAL", "BAR", "MBAR", "IN_H2O"],
-	"ILLUMINANCE": ["LUX", "FOOT_CANDLES"],
-	"ANGLE": ["DEGREE", "RADIAN"],
-	"SPEED": ["KPH", "MPH"],
-	"TEMPERATURE": ["DEG_CELSIUS", "DEG_FAHRENHEIT"],
-	"TIME": ["SECONDS", "MILLISECOND", "MINUTE", "HOUR", "DAY", "YEAR"],
-	"ELECTRICAL_POTENTIAL": ["VOLT", "MILLIVOLT"],
-	"PERCENTAGE": ["PERCENT"],
-	"ELEC_CURRENT": ["MILLIAMP"],
-	"VELOCITY": ["MPH"]
+  "ACCELERATION": [
+      "METER_PER_SEC2",
+      "STANDARD_GRAVITY",
+      "FEET_PER_SEC2",
+      "INCH_PER_SEC2",
+      "MILLMETERS_PER_SEC2",
+      "FEET_PER_MIN2"
+  ],
+  "AMOUNT": [
+      "MOLE"
+  ],
+  "ANGLE": [
+      "RADIAN",
+      "DEGREE",
+      "ARCMINUTE",
+      "ARCSECOND"
+  ],
+  "ANGULAR_ACCEL": [
+      "RAD_PER_SEC2",
+      "DEG_PER_SEC2",
+      "ROTATIONS_PER_MIN2"
+  ],
+  "ANGULAR_VEL": [
+      "RAD_PER_SEC",
+      "RAD_PER_MIN",
+      "RAD_PER_HOUR",
+      "DEG_PER_SEC",
+      "DEG_PER_MIN",
+      "DEG_PER_HOUR",
+      "ROTATIONS_PER_MIN"
+  ],
+  "AREA": [
+      "MILLIMETER2",
+      "CENTIMETER2",
+      "METER2",
+      "KILOMETER2",
+      "FEET2",
+      "INCH2",
+      "MILE2",
+      "ACRE"
+  ],
+  "ARRAY_NUMBERS": [ ],
+  "ARRAY_POINTS": [ ],
+  "BATTERY_PERCENTAGE": [ "PERCENT" ],
+  "BOOLEAN": [],
+  "CAPACITANCE": [
+      "FARAD",
+      "MICROFARAD",
+      "MILLIFARAD",
+      "NANOFARAD",
+      "PICOFARAD"
+  ],
+  "CONCENTRATION_MASS": [
+      "KILOGRAM_PER_METER3",
+      "GRAM_PER_CENTIMETER3",
+      "GRAM_PER_LITER",
+      "MILIGRAM_PER_LITER",
+      "MILIGRAM_PER_METER3",
+      "MICROGRAM_PER_LITER",
+      "MICROGRAM_PER_METER3"
+  ],
+  "CURRENCY": [
+      "USD",
+      "EURO",
+      "JPY",
+      "GBP",
+      "AUD",
+      "CAD",
+      "NTD",
+      "CNY",
+      "MXN"
+  ],
+  "DATA": [
+      "BYTE",
+      "KILOBYTE",
+      "MEGABYTE",
+      "GIGABYTE",
+      "TERABYTE"
+  ],
+  "DENSITY": [
+      "KG_PER_M3"
+  ],
+  "DISPLACEMENT": [
+      "METERS",
+      "CENTIMETERS",
+      "MICROMETERS",
+      "KILOMETERS",
+      "MILLIMETERS",
+      "FEET",
+      "INCH",
+      "YARD",
+      "MILES",
+      "MICRONS"
+  ],
+  "DYNAMIC_VISCOSITY": [
+      "PASCAL_SEC",
+      "MILLIPASCAL_SEC",
+      "POISE"
+  ],
+  "ELEC_CHARGE": [
+      "COULOMB",
+      "AMPERE_HOUR",
+      "MILLIAMPERE_HOUR"
+  ],
+  "ELEC_CONDUCTANCE": [
+      "SIEMENS"
+  ],
+  "ELEC_CONDUCTIVITY": [
+      "SIEMENS_PER_METER",
+      "DECISIEMENS_PER_METER",
+      "MILLISIEMENS_PER_METER",
+      "MICROSIEMENS_PER_METER",
+      "MILLISIEMENS_PER_CENTIMETER",
+      "MICROSIEMENS_PER_CENTIMETER"
+  ],
+  "ELEC_CURRENT": [
+      "AMPERE",
+      "MILLIAMPERE",
+      "MICROAMPERE",
+      "KILOAMPERE"
+  ],
+  "ELEC_POTENTIAL": [
+      "VOLT",
+      "MILLIVOLT",
+      "KILOVOLT",
+      "MEGAVOLT",
+      "MICROVOLT"
+  ],
+  "ELEC_RESISTANCE": [
+      "OHM",
+      "MILLIOHM",
+      "MICROOHM",
+      "KILOOHM",
+      "MEGAOHM"
+  ],
+  "ELEC_RESISTIVITY": [
+      "OHM_METER"
+  ],
+  "ENERGY": [
+      "JOULE",
+      "KILOWATT_HOUR"
+  ],
+  "ENERGY_REACTIVE": [
+      "KILOVOLTAMPS_REACTIVE_HOUR",
+      "VOLTAMPS_REACTIVE_HOUR",
+      "MEGAVOLTAMPS_REACTIVE_HOUR"
+  ],
+  "FIELD_LEVEL": [
+      "DECIBEL"
+  ],
+  "FLOW": [
+      "METERS3_PER_SEC",
+      "METERS3_PER_HOUR",
+      "PERCENT",
+      "SCFM",
+      "SCFH",
+      "LITERS_PER_SEC",
+      "LITERS_PER_MIN",
+      "LITERS_PER_HOUR",
+      "GALLONS_PER_MIN",
+      "GALLONS_PER_SEC",
+      "GALLONS_PER_HOUR",
+      "STANDARD_LITERS_PER_SECOND",
+      "STANDARD_LITERS_PER_MIN",
+      "NORMAL_METERS3_PER_HOUR",
+      "NORMAL_METERS3_PER_MINUTE",
+      "NORMAL_LITERS_PER_SEC",
+      "NORMAL_LITERS_PER_MIN"
+  ],
+  "FLOW_MASS": [
+      "KG_PER_SEC",
+      "LBS_PER_SEC"
+  ],
+  "FORCE": [
+      "NEWTON",
+      "POUND_FORCE"
+  ],
+  "FREQUENCY": [
+      "HERTZ",
+      "KHZ",
+      "MHZ"
+  ],
+  "HEAT": [
+      "JOULE",
+      "BTU",
+      "KILOCALORIE",
+      "CALORIE"
+  ],
+  "HUMIDITY": [
+      "PERCENT"
+  ],
+  "ILLUMINANCE": [
+      "LUX",
+      "FOOT_CANDLES"
+  ],
+  "INDUCTANCE": [
+      "HENRY"
+  ],
+  "IRRADIANCE": [
+      "WATT_PER_METER2"
+  ],
+  "JERK": [
+      "METER_PER_SEC3"
+  ],
+  "JSON": [ ],
+  "KINEMATIC_VISCOSITY": [
+      "CENTISTOKES",
+      "STOKES",
+      "METERS2_PER_SEC"
+  ],
+  "LENGTH": [
+      "METERS",
+      "CENTIMETERS",
+      "MICROMETERS",
+      "KILOMETERS",
+      "MILLIMETERS",
+      "FEET",
+      "INCH",
+      "YARD",
+      "MILES",
+      "MICRONS"
+  ],
+  "LINEAR_DENSITY": [
+      "KILOGRAM_PER_METER"
+  ],
+  "LOCATION": [
+      "LAT_LONG",
+      "LAT_LONG_ALT"
+  ],
+  "LUMINANCE": [
+      "CANDELA_PER_METER2"
+  ],
+  "LUMINOUS_FLUX": [
+      "LUMENS"
+  ],
+  "LUMINOUS_INTENSITY": [
+      "CANDELA"
+  ],
+  "MASS": [
+      "MICROGRAM",
+      "MILLIGRAM",
+      "GRAM",
+      "KILOGRAM",
+      "POUND",
+      "POUNDMASS",
+      "OZ",
+      "TON",
+      "METRIC_TON"
+  ],
+  "NUMBER": [ ],
+  "PARTICLES": [
+      "PPM",
+      "PPB",
+      "PPT"
+  ],
+  "PERCENTAGE": [
+      "PERCENT"
+  ],
+  "PH": [
+      "PH"
+  ],
+  "POWER": [
+      "WATT",
+      "KILOWATT",
+      "MEGAWATT",
+      "GIGAWATT",
+      "MILLIWATT",
+      "MICROWATT",
+      "HORSEPOWER"
+  ],
+  "POWER_APPARENT": [
+      "MILLIVOLTAMPS",
+      "VOLTAMPS",
+      "KILOVOLTAMPS",
+      "MEGAVOLTAMPS",
+      "GIGAVOLTAMPS"
+  ],
+  "POWER_LEVEL": [
+      "DECIBEL"
+  ],
+  "POWER_REACTIVE": [
+      "MILLIVOLTAMPS_REACTIVE",
+      "VOLTAMPS_REACTIVE",
+      "KILOVOLTAMPS_REACTIVE",
+      "MEGAVOLTAMPS_REACTIVE",
+      "GIGAVOLTAMPS_REACTIVE"
+  ],
+  "PRESSURE": [
+      "MIL_BAR",
+      "BAR",
+      "PSI",
+      "TORR",
+      "PASCAL",
+      "KILOPASCAL",
+      "HECTOPASCAL",
+      "MEGAPASCAL",
+      "ATMOSPHERE",
+      "NEWTON_PER_METER_2",
+      "MM_HG",
+      "MICRONS_HG",
+      "MILLITORR",
+      "IN_H2O"
+  ],
+  "SIGNAL_STRENGTH_PERCENTAGE": [
+      "PERCENT"
+  ],
+  "SOLID_ANGLE": [
+      "STERADIAN"
+  ],
+  "SPEED": [
+      "METER_PER_SEC",
+      "MILLMETERS_PER_SEC",
+      "KPH",
+      "MPH",
+      "INCH_PER_SEC",
+      "KNOTS",
+      "FEET_PER_SEC",
+      "FEET_PER_MIN"
+  ],
+  "STRING": [],
+  "TEMPERATURE": [
+      "KELVIN",
+      "DEG_FAHRENHEIT",
+      "DEG_CELSIUS",
+      "RANKINE"
+  ],
+  "TEMPERATURE_DELTA": [
+      "KELVIN",
+      "DEG_FAHRENHEIT",
+      "DEG_CELSIUS",
+      "RANKINE"
+  ],
+  "TIME": [
+      "MILLISECOND",
+      "SECONDS",
+      "MINUTE",
+      "HOUR",
+      "DAY",
+      "YEAR"
+  ],
+  "TORQUE": [
+      "NEWTON_METER",
+      "FOOT_POUNDS",
+      "INCH_POUNDS"
+  ],
+  "TURBIDITY": [
+      "FTU",
+      "FNU",
+      "FAU",
+      "JTU",
+      "NTU"
+  ],
+  "URL": [ ],
+  "VELOCITY": [
+      "METER_PER_SEC",
+      "MILLMETERS_PER_SEC",
+      "MPH",
+      "INCH_PER_SEC",
+      "FEET_PER_SEC",
+      "FEET_PER_MIN",
+      "KPH"
+  ],
+  "VOLUME": [
+      "METER3",
+      "LITRE",
+      "MILLILITRE",
+      "CENTIMETER3",
+      "MILLIMETER3",
+      "FEET3",
+      "FLUID_OUNCES",
+      "GALLON",
+      "QUART",
+      "PINT",
+      "INCH3",
+      "IMPERIAL_GALLON",
+      "YARD3"
+  ],
+  "WEIGHT": [
+      "NEWTON",
+      "POUND",
+      "OUNCE",
+      "TON",
+      "METRIC_TON"
+  ],
+  "WORK": [
+      "JOULE",
+      "FOOT_POUND"
+  ]
 }

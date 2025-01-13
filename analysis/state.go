@@ -136,8 +136,7 @@ func getDiagnosticsForFile(text string) []lsp.Diagnostic {
 				})
 				break
 			}
-			re = regexp.MustCompile(`"([^"]+)"`)
-			_ = re
+			_ = regexp.MustCompile(`"([^"]+)"`)
 			matches = re.FindAllStringSubmatch(prev_line, -1)
 
 			// Check if there are at least two matches and print the second one
@@ -260,17 +259,61 @@ func (s *State) TextDocumentCodeAction(id int, uri string) lsp.TextDocumentCodeA
 	return response
 }
 
-func (s *State) TextDocumentCompletion(id int, uri string) lsp.CompletionResponse {
+func data_types_completion() []lsp.CompletionItem {
+	var items []lsp.CompletionItem
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	file_dir := dir + "/analysis/ExoTypesUnits.json"
+	fileData, _ := os.ReadFile(file_dir)
 
-	// Ask your static analysis tools to figure out good completions
-	items := []lsp.CompletionItem{
-		{
-			Label:         "Neovim (BTW)",
-			Detail:        "Very cool editor",
-			Documentation: "Fun to watch in videos. Don't forget to like & subscribe to streamers using it :)",
-		},
+	var data_types map[string]any
+	_ = json.Unmarshal(fileData, &data_types)
+
+	for k,_ := range data_types {
+		items = append(items, lsp.CompletionItem{ Label: k })
 	}
+	return items
+}
 
+func data_units_completion(data_type string) []lsp.CompletionItem {
+	var items []lsp.CompletionItem
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	file_dir := dir + "/analysis/ExoTypesUnits.json"
+	fileData, _ := os.ReadFile(file_dir)
+
+	var data_types map[string][]string
+	_ = json.Unmarshal(fileData, &data_types)
+	value, _ := data_types[data_type]
+	for v := range value {
+		items = append(items, lsp.CompletionItem{ Label: value[v]})
+	}
+	return items
+}
+
+func (s *State) TextDocumentCompletion(id int, uri string, line_num int) lsp.CompletionResponse {
+	var text string = s.Documents[uri]
+	var items []lsp.CompletionItem
+	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	logger := getLogger(dir + "/log.txt")
+	logger.Printf("Completion Request %d on %s", id, uri)
+
+	line := strings.Split(text, "\n")[line_num] 
+	if (strings.Contains(line, "data_type")) {
+		items = data_types_completion()
+	} else if (strings.Contains(line, "data_unit")) {
+		type_line := strings.Split(text, "\n")[line_num-1] 
+		var re = regexp.MustCompile(`"([^"]+)"`)
+		var matches = re.FindAllStringSubmatch(type_line, -1)
+
+		// Check if there are at least two matches and print the second one
+		if len(matches) >= 2 { 
+			data_type := matches[1][1] // matches[1][1] contains the second value inside quotes
+			items = data_units_completion(data_type)
+		}
+	} else {
+		items = append(items, lsp.CompletionItem{ Label: "\"data_type\": \"\","})
+		items = append(items, lsp.CompletionItem{ Label: "\"data_unit\": \"\","})
+	}
+	
 	response := lsp.CompletionResponse{
 		Response: lsp.Response{
 			RPC: "2.0",
