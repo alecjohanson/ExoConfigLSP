@@ -310,8 +310,10 @@ func (s *State) TextDocumentCompletion(id int, uri string, line_num int) lsp.Com
 			items = data_units_completion(data_type)
 		}
 	} else {
+		items = append(items, lsp.CompletionItem{ Label: "\"<channel_id>\": { \n \"display_name\": \"<display_name>\", \n \"properties\": { \n \"data_type\": \"<dt>\", \n \"data_unit\": \"<du>\" \n } \n },", Detail: "Full Channel"})
 		items = append(items, lsp.CompletionItem{ Label: "\"data_type\": \"\","})
 		items = append(items, lsp.CompletionItem{ Label: "\"data_unit\": \"\","})
+
 	}
 	
 	response := lsp.CompletionResponse{
